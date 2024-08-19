@@ -1,0 +1,50 @@
+import numpy as np
+
+def generate_grid(images, grid_size):
+    """Generate a random grid of given size using the list of images."""
+    return np.random.choice(images, size=(grid_size, grid_size))
+
+def count_lines(grid):
+    """Count the number of lines formed in the grid."""
+    lines = 0
+    size = grid.shape[0]
+
+    # Check horizontal lines
+    for row in grid:
+        if len(set(row)) == 1:
+            lines += 1
+
+    # Check vertical lines
+    for col in grid.T:
+        if len(set(col)) == 1:
+            lines += 1
+
+    # Check diagonals
+    if len(set(grid.diagonal())) == 1:
+        lines += 1
+    if len(set(np.fliplr(grid).diagonal())) == 1:
+        lines += 1
+
+    return lines
+
+def monte_carlo_simulation(trials, grid_size, target_lines, images):
+    """Perform Monte Carlo simulation to estimate probability."""
+    success_count = 0
+
+    for _ in range(trials):
+        grid = generate_grid(images, grid_size)
+        lines = count_lines(grid)
+        if lines == target_lines:
+            success_count += 1
+
+    return success_count / trials
+
+# Parameters
+grid_size = 3
+images = range(1, 13)  # 12 different images
+trials = 100000  # Number of simulations
+target_lines = 5
+
+# Run the simulation
+probability = monte_carlo_simulation(trials, grid_size, target_lines, images)
+probability
