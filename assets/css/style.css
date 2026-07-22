@@ -470,6 +470,7 @@ button, input, select{ font-family: inherit; }
   font-size: .85rem;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(242,144,58,.35);
 }
 .usage-content{
   padding: 18px;
@@ -546,9 +547,10 @@ button, input, select{ font-family: inherit; }
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+}
+.credits-item:first-child{
   border-bottom: 1px solid var(--line);
   padding-bottom: 12px;
 }
-.credits-item:last-child{ border-bottom: none; padding-bottom: 0; }
 .credits-name{ font-size: 0.86rem; color: var(--ink-soft); }
 .credits-name a{ color: var(--accent); border-bottom: 1px solid var(--accent); }
