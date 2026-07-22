@@ -541,8 +541,15 @@ button, input, select{ font-family: inherit; }
 .credits-content::-webkit-scrollbar-track{ background: transparent; }
 .credits-content::-webkit-scrollbar-thumb{ background: var(--accent-soft); border-radius: 99px; }
 
-.credits-list{ display: flex; flex-direction: column; gap: 14px; }
-.credits-item{ border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+.credits-list{ display: flex; flex-direction: column; gap: 12px; }
+.credits-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+}
 .credits-item:last-child{ border-bottom: none; padding-bottom: 0; }
-.credits-text{ font-size: 0.86rem; color: var(--ink-soft); line-height: 1.55; }
-.credits-text a{ color: var(--accent); border-bottom: 1px solid var(--accent); word-break: break-all; }
+.credits-name{ font-size: 0.86rem; color: var(--ink); font-weight: 600; }
