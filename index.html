@@ -50,43 +50,42 @@
 
 
     
-    <details class="usage-details">
-      <summary class="usage-summary">
+    <details class="info-details">
+      <summary class="info-summary">
         <span class="usage-icon">🤍</span>
-        <span>使用說明</span>
-        <span class="usage-arrow">👇</span>
+        <span>站內資訊</span>
+        <span class="info-arrow">👇</span>
       </summary>
-      <div class="usage-content" id="usageContent">
-        <div class="spinner" style="width:20px; height:20px; margin:10px auto;"></div>
-        <p style="text-align:center; font-size:0.85rem; color:var(--ink-soft);">說明載入中...</p>
-      </div>
-    </details>
 
-    <details class="changelog-details">
-      <summary class="changelog-summary">
-        <span class="changelog-dot"></span>
-        <span>更新日誌</span>
-        <span class="changelog-arrow">👇</span>
-      </summary>
-      <div class="changelog-content" id="changelogContent">
-        <div class="spinner" style="width:20px; height:20px; margin:10px auto;"></div>
-        <p style="text-align:center; font-size:0.85rem; color:var(--ink-soft);">日誌載入中...</p>
+      <div class="info-tabs" role="tablist">
+        <button type="button" class="info-tab is-active" data-tab="usage">使用說明</button>
+        <button type="button" class="info-tab" data-tab="changelog">更新日誌</button>
+        <button type="button" class="info-tab" data-tab="credits">前人種樹</button>
       </div>
-    </details>
 
-    <details class="credits-details">
-      <summary class="credits-summary">
-        <span class="credits-dot"></span>
-        <span>前人種樹</span>
-        <span class="credits-arrow">👇</span>
-      </summary>
-      <div class="credits-content">
-        <div class="credits-list">
-          <div class="credits-item">
-            <div class="credits-text"><a href="https://www.plurk.com/p/範例連結1" target="_blank" rel="noopener">貼文標題／說明文字</a> — 姓名／噗浪帳號</div>
-          </div>
-          <div class="credits-item">
-            <div class="credits-text"><a href="https://www.plurk.com/p/範例連結2" target="_blank" rel="noopener">貼文標題／說明文字</a> — 姓名／噗浪帳號</div>
+      <div class="info-panel is-active" data-panel="usage">
+        <div class="usage-content" id="usageContent">
+          <div class="spinner" style="width:20px; height:20px; margin:10px auto;"></div>
+          <p style="text-align:center; font-size:0.85rem; color:var(--ink-soft);">說明載入中...</p>
+        </div>
+      </div>
+
+      <div class="info-panel" data-panel="changelog">
+        <div class="changelog-content" id="changelogContent">
+          <div class="spinner" style="width:20px; height:20px; margin:10px auto;"></div>
+          <p style="text-align:center; font-size:0.85rem; color:var(--ink-soft);">日誌載入中...</p>
+        </div>
+      </div>
+
+      <div class="info-panel" data-panel="credits">
+        <div class="credits-content">
+          <div class="credits-list">
+            <div class="credits-item">
+              <div class="credits-text"><a href="https://www.plurk.com/p/範例連結1" target="_blank" rel="noopener">貼文標題／說明文字</a> — 姓名／噗浪帳號</div>
+            </div>
+            <div class="credits-item">
+              <div class="credits-text"><a href="https://www.plurk.com/p/範例連結2" target="_blank" rel="noopener">貼文標題／說明文字</a> — 姓名／噗浪帳號</div>
+            </div>
           </div>
         </div>
       </div>
@@ -96,6 +95,16 @@
       <input type="text" id="searchInput" placeholder="搜尋工作室名稱或噗浪帳號…">
     </div>
   </section>
+
+  <script>
+    document.querySelectorAll('.info-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var target = tab.dataset.tab;
+        document.querySelectorAll('.info-tab').forEach(function (t) { t.classList.toggle('is-active', t === tab); });
+        document.querySelectorAll('.info-panel').forEach(function (p) { p.classList.toggle('is-active', p.dataset.panel === target); });
+      });
+    });
+  </script>
 
   <section class="filters">
     <div class="filter-group">

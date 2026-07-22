@@ -401,20 +401,20 @@ button, input, select{ font-family: inherit; }
   .studio-hero-info .charm-plurk, .studio-hero-info .badge-row{ justify-content:center; text-align:center; }
 }
 
-/* ===================== 使用說明 (Usage) ===================== */
-.usage-details{
+/* ===================== 站內資訊 (使用說明／更新日誌／前人種樹，共用一個摺疊區塊) ===================== */
+.info-details{
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  margin: 0 auto 14px;
+  margin: 0 auto 20px;
   overflow: hidden;
   width: 100%;
   max-width: min(90%, 800px);
   text-align: left;
   transition: box-shadow .2s ease;
 }
-.usage-details[open]{ box-shadow: 0 6px 20px var(--shadow); }
-.usage-summary{
+.info-details[open]{ box-shadow: 0 6px 20px var(--shadow); }
+.info-summary{
   display: flex;
   align-items: center;
   gap: 10px;
@@ -427,7 +427,41 @@ button, input, select{ font-family: inherit; }
   user-select: none;
   list-style: none;
 }
-.usage-summary::-webkit-details-marker{ display: none; }
+.info-summary::-webkit-details-marker{ display: none; }
+.info-arrow{
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  transition: transform 0.2s ease;
+}
+.info-details[open] .info-arrow{ transform: rotate(180deg); }
+
+.info-tabs{
+  display: flex;
+  gap: 4px;
+  padding: 0 14px;
+  border-top: 1px solid var(--line);
+  background: var(--bg-soft, rgba(0,0,0,.02));
+}
+.info-tab{
+  appearance: none;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .15s ease, border-color .15s ease;
+}
+.info-tab:hover{ color: var(--ink); }
+.info-tab.is-active{ color: var(--accent); border-bottom-color: var(--accent); }
+
+.info-panel{ display: none; }
+.info-panel.is-active{ display: block; }
+
 .usage-icon{
   width: 28px; height: 28px;
   border-radius: 50%;
@@ -438,15 +472,7 @@ button, input, select{ font-family: inherit; }
   flex-shrink: 0;
   box-shadow: 0 2px 6px rgba(242,144,58,.35);
 }
-.usage-arrow{
-  margin-left: auto;
-  font-size: 0.72rem;
-  color: var(--ink-soft);
-  transition: transform 0.2s ease;
-}
-.usage-details[open] .usage-arrow{ transform: rotate(180deg); }
 .usage-content{
-  border-top: 1px solid var(--line);
   padding: 18px;
   max-height: 280px;
   overflow-y: auto;
@@ -483,42 +509,8 @@ button, input, select{ font-family: inherit; }
 }
 .usage-line-text a{ color: var(--accent); border-bottom: 1px solid var(--accent); word-break: break-all; }
 
-/* ===================== 更新日誌 (Changelog) ===================== */
-.changelog-details{
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  margin: 0 auto 20px;
-  overflow: hidden;
-  width: 100%;
-  max-width: min(90%, 800px);
-  text-align: left;
-}
-.changelog-summary{
-  display: flex;
-  align-items: center;
-  padding: 13px 18px;
-  font-weight: 600;
-  cursor: pointer;
-  user-select: none;
-  list-style: none;
-}
-.changelog-summary::-webkit-details-marker{ display: none; }
-.changelog-dot{
-  width: 7px; height: 7px;
-  background-color: var(--accent);
-  border-radius: 50%;
-  margin-right: 10px;
-}
-.changelog-arrow{
-  margin-left: auto;
-  font-size: 0.72rem;
-  color: var(--ink-soft);
-  transition: transform 0.2s ease;
-}
-.changelog-details[open] .changelog-arrow{ transform: rotate(180deg); }
+/* ---- 更新日誌內容（放在 info-panel 內） ---- */
 .changelog-content{
-  border-top: 1px solid var(--line);
   padding: 18px;
   max-height: 280px;
   overflow-y: auto;
@@ -539,42 +531,8 @@ button, input, select{ font-family: inherit; }
 .changelog-text{ font-size: 0.86rem; color: var(--ink-soft); line-height: 1.55; }
 .changelog-text a{ color: var(--accent); border-bottom: 1px solid var(--accent); word-break: break-all; }
 
-/* ===================== 前人種樹 (Credits) ===================== */
-.credits-details{
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  margin: 0 auto 20px;
-  overflow: hidden;
-  width: 100%;
-  max-width: min(90%, 800px);
-  text-align: left;
-}
-.credits-summary{
-  display: flex;
-  align-items: center;
-  padding: 13px 18px;
-  font-weight: 600;
-  cursor: pointer;
-  user-select: none;
-  list-style: none;
-}
-.credits-summary::-webkit-details-marker{ display: none; }
-.credits-dot{
-  width: 7px; height: 7px;
-  background-color: var(--accent);
-  border-radius: 50%;
-  margin-right: 10px;
-}
-.credits-arrow{
-  margin-left: auto;
-  font-size: 0.72rem;
-  color: var(--ink-soft);
-  transition: transform 0.2s ease;
-}
-.credits-details[open] .credits-arrow{ transform: rotate(180deg); }
+/* ---- 前人種樹內容（放在 info-panel 內） ---- */
 .credits-content{
-  border-top: 1px solid var(--line);
   padding: 18px;
   max-height: 280px;
   overflow-y: auto;
