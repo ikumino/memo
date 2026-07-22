@@ -470,7 +470,6 @@ button, input, select{ font-family: inherit; }
   font-size: .85rem;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(242,144,58,.35);
 }
 .usage-content{
   padding: 18px;
