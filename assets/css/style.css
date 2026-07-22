@@ -545,7 +545,6 @@ button, input, select{ font-family: inherit; }
 .credits-item{
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
   border-bottom: 1px solid var(--line);
