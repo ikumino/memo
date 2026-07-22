@@ -552,4 +552,4 @@ button, input, select{ font-family: inherit; }
   padding-bottom: 12px;
 }
 .credits-item:last-child{ border-bottom: none; padding-bottom: 0; }
-.credits-name{ font-size: 0.86rem; color: var(--ink); font-weight: 600; }
+.credits-name{ font-size: 0.86rem; color: var(--ink-soft); }
