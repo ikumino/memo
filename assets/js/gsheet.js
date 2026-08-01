@@ -193,24 +193,6 @@ function safeDateValue(str) {
   return Number.isNaN(t) ? 0 : t;
 }
 
-/**
- * 把時間字串轉成「幾分鐘/小時/天前」這種相對時間文字，用於「📢 最新團務」區塊。
- * 內部先用 safeDateValue 解析成毫秒數，解析不出來就直接回傳原始字串。
- */
-function formatRelativeTime(str) {
-  const ts = safeDateValue(str);
-  if (!ts) return str || '';
-  const diffMs = Date.now() - ts;
-  if (diffMs < 0) return str;
-  const min = Math.floor(diffMs / 60000);
-  if (min < 1) return '剛剛';
-  if (min < 60) return `${min} 分鐘前`;
-  const hr = Math.floor(min / 60);
-  if (hr < 24) return `${hr} 小時前`;
-  const day = Math.floor(hr / 24);
-  return `${day} 天前`;
-}
-
 /** 把文字中的半形／全形逗號統一換成中文頓號（用於「委託方式」這類條列文字） */
 function commasToDunhao(str) {
   if (!str) return '';

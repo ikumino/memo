@@ -508,11 +508,6 @@ button, input, select{ font-family: inherit; }
 }
 .usage-line-text a{ color: var(--accent); border-bottom: 1px solid var(--accent); word-break: break-all; }
 
-/* ---- 📢 最新團務（首頁摺疊框，樣式沿用「更新日誌」的 .changelog-* class） ---- */
-.plurk-updates-icon{ background: var(--highlight); }
-.plurk-post-studio{ color: var(--ink); text-decoration: none; }
-.plurk-post-studio:hover{ text-decoration: underline; }
-
 /* ---- 更新日誌內容（放在 info-panel 內） ---- */
 .changelog-content{
   padding: 18px;
@@ -534,6 +529,33 @@ button, input, select{ font-family: inherit; }
 }
 .changelog-text{ font-size: 0.86rem; color: var(--ink-soft); line-height: 1.55; }
 .changelog-text a{ color: var(--accent); border-bottom: 1px solid var(--accent); word-break: break-all; }
+
+/* ===================== 📢 最新團務（首頁獨立摺疊框，樣式比照站內資訊） ===================== */
+.news-icon{ background: var(--highlight); }
+
+.news-content{
+  padding: 18px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--surface);
+}
+.news-content::-webkit-scrollbar{ width: 6px; }
+.news-content::-webkit-scrollbar-track{ background: transparent; }
+.news-content::-webkit-scrollbar-thumb{ background: var(--accent-soft); border-radius: 99px; }
+
+.news-list{ display: flex; flex-direction: column; gap: 14px; }
+.news-item{ border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+.news-item:last-child{ border-bottom: none; padding-bottom: 0; }
+.news-meta{ display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+.news-studio-name{
+  font-size: 0.86rem; font-weight: 700; color: var(--ink);
+  cursor: pointer;
+}
+.news-studio-name:hover{ color: var(--accent); text-decoration: underline; }
+.news-time{ font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-soft); }
+.news-text{ font-size: 0.86rem; color: var(--ink-soft); line-height: 1.55; }
+.news-text a{ color: var(--accent); border-bottom: 1px solid var(--accent); word-break: break-all; }
+.news-empty{ text-align: center; font-size: 0.85rem; color: var(--ink-soft); margin: 6px 0; }
 
 /* ---- 前人種樹內容（放在 info-panel 內） ---- */
 .credits-content{

@@ -11,8 +11,7 @@ const CONFIG = {
     REVIEWS: '經驗分享',
     CHANGELOG: '更新日誌',
     USAGE: '使用說明',
-    // 「📢 最新團務」摺疊框資料來源：獨立分頁，用 IMPORTFEED 從噗浪 RSS 自動抓回
-    LATEST_POSTS: '最新團務',
+    LATEST_NEWS: '最新團務',
   },
 
   // 「使用說明」分頁設定：這個分頁不是一般表格，而是排版用的分頁
@@ -41,14 +40,6 @@ const CONFIG = {
     NOTE: '評價',
   },
 
-  // 「最新團務」分頁欄位名稱（獨立分頁：工作室／噗浪帳號／發噗時間／最新發文）
-  LATEST_POST_FIELDS: {
-    NAME: '工作室',
-    PLURK: '噗浪帳號',
-    TIME: '發噗時間',
-    CONTENT: '最新發文',
-  },
-
   // 「經驗分享」分頁欄位名稱
   REVIEW_FIELDS: {
     TIMESTAMP: '時間戳記',
@@ -74,9 +65,12 @@ const CONFIG = {
     CONTENT: '內容',
   },
 
-  // 「📢 最新團務」摺疊框設定：只顯示幾天內有發噗的工作室
-  LATEST_POST_CONFIG: {
-    DAYS: 7,
+  // 「最新團務」分頁欄位名稱：各工作室最近一次發噗的團務內容，供首頁摺疊框顯示
+  LATEST_NEWS_FIELDS: {
+    NAME: '工作室',
+    PLURK: '噗浪帳號',
+    TIME: '發噗時間',
+    CONTENT: '最新團務',
   },
 
   // 營運狀況對應的顯示樣式（需與試算表「營運狀況」欄位的選項文字完全一致）

@@ -2,7 +2,7 @@
   const F = CONFIG.STUDIO_FIELDS;
   const RF = CONFIG.REVIEW_FIELDS;
   const CF = CONFIG.CHANGELOG_FIELDS;
-  const PF = CONFIG.LATEST_POST_FIELDS;
+  const NF = CONFIG.LATEST_NEWS_FIELDS;
 
   const gridEl = document.getElementById('studioGrid');
   const countEl = document.getElementById('resultCount');
@@ -13,7 +13,7 @@
   const sortSel = document.getElementById('filterSort');
   const changelogContentEl = document.getElementById('changelogContent');
   const usageContentEl = document.getElementById('usageContent');
-  const plurkUpdatesContentEl = document.getElementById('plurkUpdatesContent');
+  const newsContentEl = document.getElementById('newsContent');
 
   let studios = [];
   const scoreMap = {}; // 工作室名稱 -> { avg, count }
@@ -155,43 +155,56 @@
     `;
   }
 
-  // 📢 最新團務：獨立「最新團務」分頁（工作室／噗浪帳號／發噗時間／最新發文，由試算表端
-  // IMPORTFEED 從噗浪 RSS 抓回），篩出過去 N 天內有發噗的工作室，依時間新→舊排序後顯示。
-  function renderPlurkUpdates(rows) {
-    if (!plurkUpdatesContentEl) return;
-    const days = (CONFIG.LATEST_POST_CONFIG && CONFIG.LATEST_POST_CONFIG.DAYS) || 7;
-    const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+  // 「一週內」以「發噗時間」欄位為準：只顯示過去 7 天內有發噗紀錄、且有填「最新團務」內容的工作室。
+  // 沒有任何工作室在一週內發文時，區塊仍會顯示，但改顯示「這週還沒有新團務」的提示文字。
+  function renderNews(rows) {
+    const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+    const cutoff = Date.now() - WEEK_MS;
 
-    const recent = rows
-      .filter((r) => r[PF.NAME] && r[PF.TIME] && r[PF.CONTENT])
-      .map((r) => ({ row: r, ts: safeDateValue(r[PF.TIME]) }))
-      .filter((x) => x.ts >= cutoff)
+    const recent = (rows || [])
+      .filter((r) => (r[NF.CONTENT] || '').trim())
+      .map((r) => ({ row: r, ts: safeDateValue(r[NF.TIME]) }))
+      .filter((item) => item.ts >= cutoff)
       .sort((a, b) => b.ts - a.ts);
 
     if (recent.length === 0) {
-      plurkUpdatesContentEl.innerHTML = `<p style="text-align:center; font-size:0.85rem; color:var(--ink-soft); margin:10px 0;">最近 ${days} 天內沒有工作室發布新噗文。</p>`;
+      newsContentEl.innerHTML = '<p class="news-empty">這週還沒有新團務。</p>';
       return;
     }
 
-    plurkUpdatesContentEl.innerHTML = `
-      <ul class="changelog-list">
+    newsContentEl.innerHTML = `
+      <ul class="news-list">
         ${recent.map(({ row: r }) => `
-          <li class="changelog-item">
-            <div class="changelog-meta">
-              <a class="plurk-post-studio changelog-event" href="studio.html?name=${encodeURIComponent(r[PF.NAME] || '')}">${r[PF.NAME] || '未命名工作室'}</a>
-              <span class="changelog-time">${formatRelativeTime(r[PF.TIME])}</span>
+          <li class="news-item">
+            <div class="news-meta">
+              <span class="news-studio-name" data-studio-name="${encodeURIComponent(r[NF.NAME] || '')}" role="link" tabindex="0">${r[NF.NAME] || '未命名工作室'}</span>
+              <span class="news-time">${r[NF.TIME] || ''}</span>
             </div>
-            <div class="changelog-text">${formatTextWithLinks(r[PF.CONTENT])}</div>
+            <div class="news-text">${formatTextWithLinks(r[NF.CONTENT])}</div>
           </li>
         `).join('')}
       </ul>
     `;
   }
 
+  // 點擊「最新團務」裡的工作室名稱，跳到該工作室的詳情頁（比照工作室卡片的點擊行為）
+  newsContentEl.addEventListener('click', (e) => {
+    const nameEl = e.target.closest('.news-studio-name');
+    if (!nameEl) return;
+    goToStudio(decodeURIComponent(nameEl.dataset.studioName || ''));
+  });
+  newsContentEl.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const nameEl = e.target.closest('.news-studio-name');
+    if (!nameEl) return;
+    e.preventDefault();
+    goToStudio(decodeURIComponent(nameEl.dataset.studioName || ''));
+  });
+
   try {
     renderState('資料載入中...', false);
 
-    const [studioRows, reviewRows, changelogRows, usageLines, latestPostRows] = await Promise.all([
+    const [studioRows, reviewRows, changelogRows, usageLines, newsRows] = await Promise.all([
       fetchSheetRows(CONFIG.SHEETS.STUDIOS),
       fetchSheetRows(CONFIG.SHEETS.REVIEWS).catch(() => []),
       fetchSheetRows(CONFIG.SHEETS.CHANGELOG).catch(() => []),
@@ -200,7 +213,7 @@
         CONFIG.USAGE_CONFIG.COLUMN,
         CONFIG.USAGE_CONFIG.START_ROW
       ).catch(() => []),
-      fetchSheetRows(CONFIG.SHEETS.LATEST_POSTS).catch(() => []),
+      fetchSheetRows(CONFIG.SHEETS.LATEST_NEWS).catch(() => []),
     ]);
     studios = studioRows;
 
@@ -227,7 +240,7 @@
     applyFilters();
     renderChangelog(changelogRows);
     renderUsage(usageLines);
-    renderPlurkUpdates(latestPostRows);
+    renderNews(newsRows);
   } catch (err) {
     console.error(err);
     renderState(
@@ -236,8 +249,6 @@
     );
     renderChangelog([]);
     renderUsage([]);
-    if (plurkUpdatesContentEl) {
-      plurkUpdatesContentEl.innerHTML = `<p style="text-align:center; font-size:0.85rem; color:var(--ink-soft); margin:10px 0;">最新團務載入失敗。</p>`;
-    }
+    renderNews([]);
   }
 })();
