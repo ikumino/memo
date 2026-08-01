@@ -11,6 +11,8 @@ const CONFIG = {
     REVIEWS: '經驗分享',
     CHANGELOG: '更新日誌',
     USAGE: '使用說明',
+    // 「📢 最新團務」摺疊框資料來源：獨立分頁，用 IMPORTFEED 從噗浪 RSS 自動抓回
+    LATEST_POSTS: '最新團務',
   },
 
   // 「使用說明」分頁設定：這個分頁不是一般表格，而是排版用的分頁
@@ -37,9 +39,14 @@ const CONFIG = {
     FACTORY: '工廠',
     ITEMS: '客製項目',
     NOTE: '評價',
-    // 以下兩欄由試算表用 IMPORTFEED 從噗浪 RSS 自動抓回，用於首頁「📢 最新團務」摺疊框
-    LATEST_TIME: '發噗時間',
-    LATEST_POST: '最新團務',
+  },
+
+  // 「最新團務」分頁欄位名稱（獨立分頁：工作室／噗浪帳號／發噗時間／最新發文）
+  LATEST_POST_FIELDS: {
+    NAME: '工作室',
+    PLURK: '噗浪帳號',
+    TIME: '發噗時間',
+    CONTENT: '最新發文',
   },
 
   // 「經驗分享」分頁欄位名稱

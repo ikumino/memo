@@ -2,6 +2,7 @@
   const F = CONFIG.STUDIO_FIELDS;
   const RF = CONFIG.REVIEW_FIELDS;
   const CF = CONFIG.CHANGELOG_FIELDS;
+  const PF = CONFIG.LATEST_POST_FIELDS;
 
   const gridEl = document.getElementById('studioGrid');
   const countEl = document.getElementById('resultCount');
@@ -154,16 +155,16 @@
     `;
   }
 
-  // 📢 最新團務：從「工作室列表」分頁裡的「發噗時間」「最新團務」兩欄（由試算表端 IMPORTFEED
-  // 從噗浪 RSS 抓回），篩出過去 N 天內有發噗的工作室，依時間新→舊排序後顯示。
-  function renderPlurkUpdates(list) {
+  // 📢 最新團務：獨立「最新團務」分頁（工作室／噗浪帳號／發噗時間／最新發文，由試算表端
+  // IMPORTFEED 從噗浪 RSS 抓回），篩出過去 N 天內有發噗的工作室，依時間新→舊排序後顯示。
+  function renderPlurkUpdates(rows) {
     if (!plurkUpdatesContentEl) return;
     const days = (CONFIG.LATEST_POST_CONFIG && CONFIG.LATEST_POST_CONFIG.DAYS) || 7;
     const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
 
-    const recent = list
-      .filter((s) => s[F.LATEST_TIME] && s[F.LATEST_POST])
-      .map((s) => ({ studio: s, ts: safeDateValue(s[F.LATEST_TIME]) }))
+    const recent = rows
+      .filter((r) => r[PF.NAME] && r[PF.TIME] && r[PF.CONTENT])
+      .map((r) => ({ row: r, ts: safeDateValue(r[PF.TIME]) }))
       .filter((x) => x.ts >= cutoff)
       .sort((a, b) => b.ts - a.ts);
 
@@ -174,13 +175,13 @@
 
     plurkUpdatesContentEl.innerHTML = `
       <ul class="changelog-list">
-        ${recent.map(({ studio: s }) => `
+        ${recent.map(({ row: r }) => `
           <li class="changelog-item">
             <div class="changelog-meta">
-              <a class="plurk-post-studio changelog-event" href="studio.html?name=${encodeURIComponent(s[F.NAME] || '')}">${s[F.NAME] || '未命名工作室'}</a>
-              <span class="changelog-time">${formatRelativeTime(s[F.LATEST_TIME])}</span>
+              <a class="plurk-post-studio changelog-event" href="studio.html?name=${encodeURIComponent(r[PF.NAME] || '')}">${r[PF.NAME] || '未命名工作室'}</a>
+              <span class="changelog-time">${formatRelativeTime(r[PF.TIME])}</span>
             </div>
-            <div class="changelog-text">${formatTextWithLinks(s[F.LATEST_POST])}</div>
+            <div class="changelog-text">${formatTextWithLinks(r[PF.CONTENT])}</div>
           </li>
         `).join('')}
       </ul>
@@ -190,7 +191,7 @@
   try {
     renderState('資料載入中...', false);
 
-    const [studioRows, reviewRows, changelogRows, usageLines] = await Promise.all([
+    const [studioRows, reviewRows, changelogRows, usageLines, latestPostRows] = await Promise.all([
       fetchSheetRows(CONFIG.SHEETS.STUDIOS),
       fetchSheetRows(CONFIG.SHEETS.REVIEWS).catch(() => []),
       fetchSheetRows(CONFIG.SHEETS.CHANGELOG).catch(() => []),
@@ -199,6 +200,7 @@
         CONFIG.USAGE_CONFIG.COLUMN,
         CONFIG.USAGE_CONFIG.START_ROW
       ).catch(() => []),
+      fetchSheetRows(CONFIG.SHEETS.LATEST_POSTS).catch(() => []),
     ]);
     studios = studioRows;
 
@@ -225,7 +227,7 @@
     applyFilters();
     renderChangelog(changelogRows);
     renderUsage(usageLines);
-    renderPlurkUpdates(studios);
+    renderPlurkUpdates(latestPostRows);
   } catch (err) {
     console.error(err);
     renderState(
